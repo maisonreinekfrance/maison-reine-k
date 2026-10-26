@@ -813,6 +813,63 @@ footer{padding:64px 0 28px}
   .frise div::before{left:-31px}
 }
 
+/* ===== Catalogue (soins et cheveux) ===== */
+.catalogue{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.fiche-p{background:#fff;border:1px solid #e7e7e7;display:flex;flex-direction:column}
+.fond-blanc .fiche-p{border-color:#ece9e4}
+.fiche-p[hidden]{display:none}
+.fiche-p .visuel{position:relative;aspect-ratio:4/5;overflow:hidden;background:#f6f4f1}
+.fiche-p .visuel img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+.fiche-p .visuel.pack{background:#fff}
+.fiche-p .visuel.pack img{object-fit:contain;padding:18px}
+.fiche-p:hover .visuel img{transform:scale(1.03)}
+.fiche-p .corps{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.fiche-p h3{font-size:1.45rem;margin:.25em 0 .15em}
+.fiche-p .ing{font-size:.74rem;letter-spacing:.06em;color:var(--gris);display:block;margin-bottom:10px}
+.fiche-p p{font-size:.9rem;margin-bottom:12px;flex:none}
+.fiche-p .opt{margin:4px 0 6px}
+.fiche-p .opt-nom{display:block;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.fiche-p .longueurs{margin:8px 0 6px;gap:6px}
+.fiche-p .longueurs button{padding:7px 11px;font-size:.72rem}
+.fiche-p .prix-produit{display:block;font-family:var(--serif);font-size:1.7rem;margin:8px 0 12px}
+.fiche-p .prix-demande{font-size:1.15rem;color:var(--gris)}
+.fiche-p .btn-ajout{width:100%;justify-content:center;margin-top:auto}
+.fiche-p .lien-wa{display:block;text-align:center;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-top:12px;text-decoration:underline;text-underline-offset:3px}
+.fiche-p .plus{margin-top:14px;border-top:1px solid #ece9e4;padding-top:10px;font-size:.86rem}
+.fiche-p .plus summary{cursor:pointer;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#1c1b1b;list-style:none}
+.fiche-p .plus summary::after{content:" +";color:var(--or)}
+.fiche-p .plus[open] summary::after{content:" −"}
+.fiche-p .plus ul{margin:10px 0 0 16px;display:grid;gap:6px;color:#3f3f3f}
+.voir-video{position:absolute;left:12px;bottom:12px;background:rgba(28,27,27,.82);color:#fff;border:0;border-radius:999px;padding:9px 15px;font:500 .68rem var(--sans);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.voir-video:hover{background:#1c1b1b}
+.filtres{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:-10px 0 34px}
+.filtres button{font:500 .7rem var(--sans);letter-spacing:.16em;text-transform:uppercase;border:1px solid #d9d6d1;background:#fff;color:#1c1b1b;border-radius:999px;padding:10px 18px;cursor:pointer;transition:.25s}
+.filtres button.actif,.filtres button:hover{background:#1c1b1b;color:#fff;border-color:#1c1b1b}
+dialog.lecteur{position:fixed;inset:0;margin:auto;height:fit-content;width:min(92vw,520px);border:0;padding:0;background:transparent;max-height:90vh;overflow:visible}
+dialog.lecteur::backdrop{background:rgba(10,9,9,.85)}
+dialog.lecteur video{display:block;width:100%;max-height:86vh;background:#000;border-radius:6px}
+dialog.lecteur .fermer{position:absolute;top:-44px;right:0;background:none;border:0;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer}
+/* Vidéos en vignettes */
+.videos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.videos.trois{grid-template-columns:repeat(3,1fr);max-width:900px;margin:0 auto}
+.vignette{position:relative;display:block;aspect-ratio:9/16;overflow:hidden;background:#111;border:0;padding:0;cursor:pointer;width:100%}
+.vignette img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease,opacity .4s}
+.vignette:hover img{transform:scale(1.04);opacity:.85}
+.vignette::after{content:"▶";position:absolute;inset:auto auto 14px 14px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);color:#1c1b1b;display:grid;place-items:center;font-size:.9rem;padding-left:3px}
+.vignette span{position:absolute;left:70px;bottom:24px;color:#fff;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.logo img{height:46px;width:auto;display:block}
+footer .logo img{height:40px}
+@media (max-width:960px){
+  .catalogue{grid-template-columns:1fr 1fr}
+  .videos{grid-template-columns:1fr 1fr}
+  .logo img{height:38px}
+}
+@media (max-width:560px){
+  .catalogue{grid-template-columns:1fr}
+  .videos.trois{grid-template-columns:1fr 1fr}
+  .vignette span{display:none}
+}
+
 /* Choix de la livraison dans le panier */
 .livraison-choix{border:1px solid #e7e7e7;padding:12px 14px;margin-bottom:12px;font-size:.84rem}
 .livraison-choix label[for]{display:block;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
