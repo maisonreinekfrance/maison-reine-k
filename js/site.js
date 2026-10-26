@@ -153,6 +153,57 @@ rendre();
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vu');io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.rev').forEach(el=>io.observe(el));
 
+// ===== Fiches produit : options, prix, panier, WhatsApp, vidéo =====
+document.querySelectorAll('[data-produit]').forEach(f => {
+  const d = JSON.parse(f.dataset.produit), choix = d.options.map(() => 0);
+  const img = f.querySelector('.visuel img'), prixEl = f.querySelector('[data-prix-affiche]');
+  const valeurs = () => d.options.map((o, i) => o.valeurs[choix[i]]);
+  const prix = () => { const v = valeurs().find(x => x.prix != null); return v ? v.prix : d.prix; };
+  const libelle = () => valeurs().map(v => v.v).join(' · ');
+  const ident = () => [d.id, ...valeurs().map(v => v.id)].filter(Boolean).join('-');
+  const maj = () => {
+    if (prixEl && prix() != null) prixEl.textContent = euro(prix());
+    const im = valeurs().find(v => v.img); if (im && img) img.src = im.img;
+    const wa = f.querySelector('[data-wa-fiche]');
+    if (wa) wa.href = WA + '?text=' + encodeURIComponent('Bonjour Maison Reine K, je souhaite commander : ' + d.nom + (libelle() ? ' (' + libelle() + ')' : '') + (prix() != null ? ', ' + euro(prix()) : '') + '.');
+  };
+  f.querySelectorAll('.opt').forEach((g, i) => g.querySelectorAll('button').forEach((b, j) => b.onclick = () => {
+    g.querySelectorAll('button').forEach(x => x.classList.remove('actif')); b.classList.add('actif'); choix[i] = j; maj();
+  }));
+  const aj = f.querySelector('[data-ajout-fiche]');
+  if (aj) aj.onclick = () => {
+    ajouter({id: ident(), nom: d.nom, v: libelle(), prix: prix(), img: (valeurs().find(v => v.img) || {}).img || d.img, contenu: d.contenu});
+    const t = aj.textContent; aj.textContent = 'Ajouté ✓'; aj.classList.add('ok');
+    setTimeout(() => { aj.textContent = t; aj.classList.remove('ok'); }, 1300);
+    ouvrirPanier();
+  };
+  maj();
+});
+// Filtres de la boutique cheveux
+document.querySelectorAll('.filtres').forEach(z => z.querySelectorAll('button').forEach(b => b.onclick = () => {
+  z.querySelectorAll('button').forEach(x => x.classList.remove('actif')); b.classList.add('actif');
+  const k = b.dataset.filtre;
+  z.parentNode.querySelectorAll('.fiche-p').forEach(p => p.hidden = !(k === 'tous' || p.dataset.cat === k));
+}));
+// Lecteur vidéo (chargé seulement au clic)
+(function(){
+  let dlg;
+  const ouvrir = (src, poster) => {
+    if (!dlg) {
+      dlg = document.createElement('dialog'); dlg.className = 'lecteur';
+      dlg.innerHTML = '<button type="button" class="fermer" aria-label="Fermer la vidéo">×</button><video controls playsinline></video>';
+      document.body.appendChild(dlg);
+      const fermer = () => { dlg.querySelector('video').pause(); dlg.close(); };
+      dlg.querySelector('.fermer').onclick = fermer;
+      dlg.addEventListener('click', e => { if (e.target === dlg) fermer(); });
+      dlg.addEventListener('close', () => dlg.querySelector('video').pause());
+    }
+    const v = dlg.querySelector('video'); v.poster = poster || ''; v.src = src;
+    dlg.showModal(); v.play().catch(() => {});
+  };
+  document.querySelectorAll('[data-video]').forEach(b => b.onclick = e => { e.preventDefault(); ouvrir(b.dataset.video, b.dataset.poster); });
+})();
+
 // Sans caisse branchée, pas de paiement par carte (ni simulation) : commande WhatsApp uniquement.
 if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style.display = 'none'; }
 // Choix de la livraison dans le panier
@@ -169,19 +220,4 @@ if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style
   z.onchange = () => { livraison.zone = z.value; appliquer(); };
   m.querySelectorAll('input').forEach(i => i.onchange = () => { livraison.mode = i.value; appliquer(); });
   appliquer();
-})();
-
-// Fermetures : qualité et longueur, commande sur WhatsApp
-(function(){
-  const f = document.getElementById('fermeture'); if (!f) return;
-  const etat = {q: 'RAW', l: '14″'};  // qualité unique : RAW
-  const maj = () => {
-    document.getElementById('fermeture-info').textContent = 'Fermeture ' + etat.q + ' · tulle HD · ' + etat.l;
-    document.getElementById('fermeture-cmd').href = 'https://wa.me/33661093864?text=' + encodeURIComponent('Bonjour Maison Reine K, je souhaite commander une fermeture (closure) ' + etat.q + ', tulle HD, ' + etat.l + '. Quel est le prix ?');
-  };
-  f.querySelectorAll('[data-groupe]').forEach(g => g.querySelectorAll('button').forEach(b => b.onclick = () => {
-    g.querySelectorAll('button').forEach(x => x.classList.remove('actif')); b.classList.add('actif');
-    etat[g.dataset.groupe] = b.dataset.v; maj();
-  }));
-  maj();
 })();
