@@ -820,8 +820,14 @@ footer{padding:64px 0 28px}
 .fiche-p[hidden]{display:none}
 .fiche-p .visuel{position:relative;aspect-ratio:4/5;overflow:hidden;background:#f6f4f1}
 .fiche-p .visuel img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
-.fiche-p .visuel.pack{background:#fff}
-.fiche-p .visuel.pack img{object-fit:contain;padding:18px}
+/* Packshots retouchés (fond crème) : l'image remplit la vignette */
+.fiche-p .visuel.pack{background:#efe9e1;aspect-ratio:1/1}
+.fiche-p .visuel.pack img{object-fit:cover;padding:0}
+.vedettes .visuel.pack{background:#efe9e1;aspect-ratio:1/1}
+.vedettes .visuel.pack img{object-fit:cover;padding:0}
+.arche span{padding:0;background:#efe9e1}
+.arche img{object-fit:cover}
+.volet-img .visuel.pack img[src*="p-"]{object-fit:cover;padding:0}
 .fiche-p:hover .visuel img{transform:scale(1.03)}
 .fiche-p .corps{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
 .fiche-p h3{font-size:1.45rem;margin:.25em 0 .15em}
