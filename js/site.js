@@ -204,6 +204,11 @@ document.querySelectorAll('.filtres').forEach(z => z.querySelectorAll('button').
   document.querySelectorAll('[data-video]').forEach(b => b.onclick = e => { e.preventDefault(); ouvrir(b.dataset.video, b.dataset.poster); });
 })();
 
+// Médiathèque : « Voir tout »
+document.querySelectorAll('.mediatheque .voir-tout').forEach(b => b.onclick = () => {
+  b.closest('.mediatheque').classList.add('ouverte'); b.parentNode.remove();
+});
+
 // Sans caisse branchée, pas de paiement par carte (ni simulation) : commande WhatsApp uniquement.
 if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style.display = 'none'; }
 // Choix de la livraison dans le panier
