@@ -164,6 +164,8 @@ document.querySelectorAll('[data-produit]').forEach(f => {
   const maj = () => {
     if (prixEl && prix() != null) prixEl.textContent = euro(prix());
     const im = valeurs().find(v => v.img); if (im && img) img.src = im.img;
+    const vi = valeurs().find(v => v.video), bv = f.querySelector('.voir-video');
+    if (vi && bv) { bv.dataset.video = 'vid/' + vi.video + '.mp4'; bv.dataset.poster = 'img/' + vi.video + '-poster.jpg'; }
     const wa = f.querySelector('[data-wa-fiche]');
     if (wa) wa.href = WA + '?text=' + encodeURIComponent('Bonjour Maison Reine K, je souhaite commander : ' + d.nom + (libelle() ? ' (' + libelle() + ')' : '') + (prix() != null ? ', ' + euro(prix()) : '') + '.');
   };
