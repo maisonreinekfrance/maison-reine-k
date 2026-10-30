@@ -62,9 +62,9 @@ const libelleLivraison = () => NOMS_ZONE[livraison.zone] + (livraison.zone === '
 const tiroir = $('tiroir'), voile = $('voile');
 function ouvrirPanier(){ tiroir.classList.add('ouvert'); voile.classList.add('ouvert'); tiroir.setAttribute('aria-hidden','false'); }
 function fermerPanier(){ tiroir.classList.remove('ouvert'); voile.classList.remove('ouvert'); tiroir.setAttribute('aria-hidden','true'); }
-function ajouter(p){
+function ajouter(p, n = 1){
   const ex = panier.find(x => x.id === p.id);
-  if (ex) ex.q++; else panier.push({...p, q:1});
+  if (ex) ex.q = Math.min(20, ex.q + n); else panier.push({...p, q: n});
   sauver(); rendre();
   const b = $('ouvrir-panier'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
 }
@@ -153,39 +153,66 @@ rendre();
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vu');io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.rev').forEach(el=>io.observe(el));
 
-// ===== Fiches produit : options, prix, panier, WhatsApp, vidéo =====
-document.querySelectorAll('[data-produit]').forEach(f => {
-  const d = JSON.parse(f.dataset.produit), choix = d.options.map(() => 0);
-  const img = f.querySelector('.visuel img'), prixEl = f.querySelector('[data-prix-affiche]');
+// ===== Page produit : galerie, options, quantité, panier, WhatsApp =====
+document.querySelectorAll('[data-pp]').forEach(f => {
+  const d = JSON.parse(f.dataset.pp), choix = d.options.map(() => 0);
+  const piste = f.querySelector('.pp-piste'), diapos = [...f.querySelectorAll('.pp-diapo')];
+  const vigs = [...f.querySelectorAll('.pp-vignettes button')], cpt = f.querySelector('.pp-compteur b');
+  let courant = 0;
+  const aller = k => { k = Math.max(0, Math.min(diapos.length - 1, k)); piste.scrollTo({left: k * piste.clientWidth, behavior: 'smooth'}); };
+  const arreterVideos = () => f.querySelectorAll('.pp-diapo video').forEach(v => v.pause());
+  piste.addEventListener('scroll', () => {
+    const k = Math.round(piste.scrollLeft / Math.max(1, piste.clientWidth));
+    if (k === courant) return;
+    courant = k; arreterVideos();
+    vigs.forEach((b, i) => b.classList.toggle('actif', i === k));
+    if (vigs[k]) vigs[k].scrollIntoView({block: 'nearest', inline: 'nearest'});
+    if (cpt) cpt.textContent = k + 1;
+  }, {passive: true});
+  vigs.forEach((b, i) => b.onclick = () => aller(i));
+  const pr = f.querySelector('.pp-fl.prec'), su = f.querySelector('.pp-fl.suiv');
+  if (pr) pr.onclick = () => aller(courant - 1);
+  if (su) su.onclick = () => aller(courant + 1);
+  f.querySelectorAll('.pp-lire').forEach(b => b.onclick = () => {
+    const v = document.createElement('video');
+    v.src = b.dataset.src; v.poster = b.querySelector('img').src; v.controls = true; v.playsInline = true; v.autoplay = true;
+    b.replaceWith(v); v.play().catch(() => {});
+  });
   const valeurs = () => d.options.map((o, i) => o.valeurs[choix[i]]);
   const prix = () => { const v = valeurs().find(x => x.prix != null); return v ? v.prix : d.prix; };
   const libelle = () => valeurs().map(v => v.v).join(' · ');
   const ident = () => [d.id, ...valeurs().map(v => v.id)].filter(Boolean).join('-');
+  const image = () => (valeurs().find(v => v.img) || {}).img || d.img;
+  const prixEl = f.querySelector('[data-prix-affiche]'), qEl = f.querySelector('.pp-qte span');
+  let q = 1;
   const maj = () => {
     if (prixEl && prix() != null) prixEl.textContent = euro(prix());
-    const im = valeurs().find(v => v.img); if (im && img) img.src = im.img;
-    const vi = valeurs().find(v => v.video), bv = f.querySelector('.voir-video');
-    if (vi && bv) { bv.dataset.video = 'vid/' + vi.video + '.mp4'; bv.dataset.poster = 'img/' + vi.video + '-poster.jpg'; }
-    const wa = f.querySelector('[data-wa-fiche]');
-    if (wa) wa.href = WA + '?text=' + encodeURIComponent('Bonjour Maison Reine K, je souhaite commander : ' + d.nom + (libelle() ? ' (' + libelle() + ')' : '') + (prix() != null ? ', ' + euro(prix()) : '') + '.');
+    const wa = f.querySelector('[data-wa]');
+    if (wa) wa.href = WA + '?text=' + encodeURIComponent((prix() != null ? 'Bonjour Maison Reine K, j’ai une question sur : ' : 'Bonjour Maison Reine K, je souhaite commander : ') + d.nom + (libelle() ? ' (' + libelle() + ')' : '') + '.');
   };
-  f.querySelectorAll('.opt').forEach((g, i) => g.querySelectorAll('button').forEach((b, j) => b.onclick = () => {
-    g.querySelectorAll('button').forEach(x => x.classList.remove('actif')); b.classList.add('actif'); choix[i] = j; maj();
+  f.querySelectorAll('.pp-opt').forEach((g, i) => g.querySelectorAll('.pp-choix button').forEach((b, j) => b.onclick = () => {
+    g.querySelectorAll('.pp-choix button').forEach(x => x.classList.remove('actif')); b.classList.add('actif'); choix[i] = j;
+    g.querySelector('.pp-opt-nom b').textContent = d.options[i].valeurs[j].v;
+    const im = d.options[i].valeurs[j].img;
+    if (im) { const k = diapos.findIndex(x => x.dataset.nom === im); if (k >= 0) aller(k); }
+    maj();
   }));
-  const aj = f.querySelector('[data-ajout-fiche]');
+  f.querySelectorAll('.pp-qte button').forEach(b => b.onclick = () => { q = Math.max(1, Math.min(20, q + +b.dataset.q)); qEl.textContent = q; maj(); });
+  const aj = f.querySelector('button.pp-ajout');
   if (aj) aj.onclick = () => {
-    ajouter({id: ident(), nom: d.nom, v: libelle(), prix: prix(), img: (valeurs().find(v => v.img) || {}).img || d.img, contenu: d.contenu});
+    ajouter({id: ident(), nom: d.nom, v: libelle(), prix: prix(), img: image(), contenu: d.contenu}, q);
     const t = aj.textContent; aj.textContent = 'Ajouté ✓'; aj.classList.add('ok');
     setTimeout(() => { aj.textContent = t; aj.classList.remove('ok'); }, 1300);
     ouvrirPanier();
   };
+  addEventListener('resize', () => piste.scrollTo({left: courant * piste.clientWidth}));
   maj();
 });
 // Filtres de la boutique cheveux
 document.querySelectorAll('.filtres').forEach(z => z.querySelectorAll('button').forEach(b => b.onclick = () => {
   z.querySelectorAll('button').forEach(x => x.classList.remove('actif')); b.classList.add('actif');
   const k = b.dataset.filtre;
-  z.parentNode.querySelectorAll('.fiche-p').forEach(p => p.hidden = !(k === 'tous' || p.dataset.cat === k));
+  z.parentNode.querySelectorAll('.carte-p').forEach(p => p.hidden = !(k === 'tous' || p.dataset.cat === k));
 }));
 // Lecteur vidéo (chargé seulement au clic)
 (function(){
