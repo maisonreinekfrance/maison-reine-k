@@ -863,12 +863,12 @@ dialog.lecteur .fermer{position:absolute;top:-44px;right:0;background:none;borde
 .vignette:hover img{transform:scale(1.04);opacity:.85}
 .vignette::after{content:"▶";position:absolute;inset:auto auto 14px 14px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);color:#1c1b1b;display:grid;place-items:center;font-size:.9rem;padding-left:3px}
 .vignette span{position:absolute;left:70px;bottom:24px;color:#fff;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.6)}
-.logo img{height:46px;width:auto;display:block}
-footer .logo img{height:40px}
+.logo img{height:60px;width:auto;display:block}
+footer .logo img{height:90px}
 @media (max-width:960px){
   .catalogue{grid-template-columns:1fr 1fr}
   .videos{grid-template-columns:1fr 1fr}
-  .logo img{height:38px}
+  .logo img{height:48px}
 }
 @media (max-width:560px){
   .catalogue{grid-template-columns:1fr}
