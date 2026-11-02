@@ -1197,3 +1197,43 @@ footer .logo img{height:90px}
   .ap-salon-img{aspect-ratio:4/3}
   .ap-salon dl div{grid-template-columns:100px minmax(0,1fr)}
 }
+
+/* Page À propos, version aérée */
+.ap-grille{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:72px;align-items:center}
+.ap-photo{aspect-ratio:4/5;overflow:hidden;background:#e6dfd4}
+.ap-photo img,.ap-large img{width:100%;height:100%;object-fit:cover;display:block}
+.ap-reine h2{margin:.35em 0 .5em}
+.ap-reine p{font-size:1.08rem}
+.ap-chiffres{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:32px 0 28px;padding:24px 0;border-top:1px solid #e3dcd1;border-bottom:1px solid #e3dcd1}
+.ap-chiffres b{display:block;font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.1}
+.ap-chiffres span{font-size:.76rem;color:#5c544a}
+.ap-frise{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:26px;border-top:1px solid #b9ab99;padding:0}
+.ap-frise li{position:relative;padding-top:24px}
+.ap-frise li::before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--or)}
+.ap-frise b{display:block;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#7c6a55;font-weight:500}
+.ap-frise h3{font-size:1.18rem;margin:.45em 0 .3em}
+.ap-frise p{font-size:.86rem}
+.ap-expertise{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:center}
+.ap-large{aspect-ratio:3/2;overflow:hidden;background:#e6dfd4}
+.ap-expertise h2{margin:.35em 0 .7em}
+.ap-points{list-style:none;padding:0}
+.ap-points li{padding:15px 0;border-top:1px solid #e3dcd1}
+.ap-points b{display:block;font-weight:400;font-size:1.12rem}
+.ap-points span{font-size:.9rem;color:#5c544a}
+@media (max-width:960px){
+  .ap-grille,.ap-expertise{grid-template-columns:minmax(0,1fr);gap:30px}
+  .ap-frise{grid-template-columns:minmax(0,1fr);gap:0;border-top:0;border-left:1px solid #b9ab99;padding-left:20px}
+  .ap-frise li{padding:0 0 24px}
+  .ap-frise li::before{top:6px;left:-25px}
+  .ap-chiffres{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Réseaux sociaux */
+.sociaux{display:flex;gap:10px;margin-top:6px}
+.sociaux a{width:38px;height:38px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;transition:background .25s,color .25s}
+.sociaux a:hover{background:#fff;color:#1c1b1b}
+.sociaux svg{width:17px;height:17px}
+.ap-reine .sociaux a:hover{background:#1c1b1b;color:#fff}
+/* Cartes un peu plus visibles sur fond blanc */
+.ucarte,.autorite li,.fiche,.fo-mini,.fo-carte,.pp-atouts{background:#efe8dd}
+.ucarte p,.fiche p,.fo-mini-txt>span{color:#5c544a}
