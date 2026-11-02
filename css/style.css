@@ -1128,6 +1128,23 @@ footer .logo img{height:90px}
 }
 
 /* Page Formations */
+.fo-apercu{padding-bottom:0}
+.fo-minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.fo-mini{display:flex;flex-direction:column;background:#f8f5f0;transition:transform .3s ease,box-shadow .3s ease}
+.fo-mini:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(28,27,27,.08)}
+.fo-mini-img{display:block;aspect-ratio:16/9;overflow:hidden;background:#e6dfd4}
+.fo-mini-img img{width:100%;height:100%;object-fit:cover;display:block}
+.fo-mini-txt{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
+.fo-mini small{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.fo-mini b{font-weight:400;font-size:1.25rem;line-height:1.25}
+.fo-mini-txt>span{font-size:.86rem;color:var(--gris)}
+.fo-carte{scroll-margin-top:100px}
+@media (max-width:760px){
+  .fo-minis{grid-template-columns:1fr;gap:12px}
+  .fo-mini{flex-direction:row;align-items:stretch}
+  .fo-mini-img{flex:0 0 110px;aspect-ratio:auto}
+  .fo-mini-txt{padding:14px 16px}
+}
 .fo-liste{display:grid;gap:44px}
 .fo-carte{display:grid;grid-template-columns:1fr 1fr;background:#f8f5f0;overflow:hidden}
 .fo-carte.inverse .fo-img{order:2}
