@@ -1075,6 +1075,22 @@ footer .logo img{height:90px}
   .ps-comp th,.ps-comp td{padding:12px 10px}
 }
 
+/* Carrousels de vidéos */
+.car{overflow:hidden;display:grid;gap:14px}
+.car-rang{overflow:hidden}
+.car-piste{display:flex;width:max-content;animation:car-defile var(--duree,60s) linear infinite}
+.car-rang.inverse .car-piste{animation-direction:reverse}
+.car-rang:hover .car-piste,.car-rang:focus-within .car-piste{animation-play-state:paused}
+@keyframes car-defile{to{transform:translateX(-50%)}}
+.car-item{position:relative;display:block;flex:none;margin-right:14px;overflow:hidden;background:#17120f;border:0;padding:0;cursor:pointer}
+.car.un .car-item{width:clamp(230px,31vw,430px);aspect-ratio:4/5}
+.car.deux .car-item{width:clamp(165px,19vw,280px);aspect-ratio:9/14}
+.car-item video,.car-item img{width:100%;height:100%;object-fit:cover;display:block}
+.car-item i{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.88);color:#1c1b1b;display:grid;place-items:center;font-style:normal;font-size:.7rem;padding-left:2px}
+.car-item span{position:absolute;left:0;right:0;bottom:0;padding:34px 14px 12px;text-align:left;color:#fff;font:400 .68rem var(--sans);letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.car-section .titre-bloc{margin-bottom:34px}
+@media (prefers-reduced-motion:reduce){.car-rang{overflow-x:auto}.car-piste{animation:none}}
+
 .mediatheque .en-plus{display:none}
 .mediatheque.ouverte .en-plus{display:block}
 .media-photo{aspect-ratio:9/16;overflow:hidden;background:#f3f1ee}
