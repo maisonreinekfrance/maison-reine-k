@@ -986,6 +986,8 @@ footer .logo img{height:90px}
 .ps-accroche.avec-photo .ps-acc-txt{align-self:center;max-width:600px;margin:0;padding:70px 60px;justify-self:end}
 .ps-acc-img{overflow:hidden}.ps-acc-img img{width:100%;height:100%;object-fit:cover;display:block}
 .ps-etapes-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.ps-etapes-grille.n4{grid-template-columns:repeat(4,1fr);gap:20px}
+.ps-etapes-grille.n4 h3{font-size:1.4rem}
 .ps-etape-img{display:block;aspect-ratio:4/5;overflow:hidden;margin-bottom:18px;background:#e6dfd4}
 .ps-etape-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease}
 .ps-etape:hover .ps-etape-img img{transform:scale(1.03)}
@@ -1061,7 +1063,8 @@ footer .logo img{height:90px}
   .ps-accroche.avec-photo{grid-template-columns:1fr;min-height:0}
   .ps-accroche.avec-photo .ps-acc-txt{padding:60px 24px;justify-self:start}
   .ps-acc-img{aspect-ratio:4/5}
-  .ps-etapes-grille{grid-template-columns:1fr;gap:34px}
+  .ps-etapes-grille,.ps-etapes-grille.n4{grid-template-columns:1fr 1fr;gap:26px 14px}
+  .ps-etapes-grille.n3{grid-template-columns:1fr}
   .ps-ingredients{padding:70px 0}
   .ps-resultat{position:static}
   .ps-longueurs{grid-template-columns:repeat(2,1fr)}
