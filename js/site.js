@@ -233,6 +233,18 @@ document.querySelectorAll('.filtres').forEach(z => z.querySelectorAll('button').
   document.querySelectorAll('[data-video]').forEach(b => b.onclick = e => { e.preventDefault(); ouvrir(b.dataset.video, b.dataset.poster); });
 })();
 
+// Carrousels : les vidéos ne se chargent et ne jouent que lorsqu'elles sont à l'écran
+(function(){
+  const calme = matchMedia('(prefers-reduced-motion: reduce)').matches || (navigator.connection && navigator.connection.saveData);
+  if (calme || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target;
+    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+    else v.pause();
+  }), {rootMargin: '80px'});
+  document.querySelectorAll('.car video').forEach(v => io.observe(v));
+})();
+
 // Médiathèque : « Voir tout »
 document.querySelectorAll('.mediatheque .voir-tout').forEach(b => b.onclick = () => {
   b.closest('.mediatheque').classList.add('ouverte'); b.parentNode.remove();
