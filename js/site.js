@@ -267,3 +267,9 @@ if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style
   m.querySelectorAll('input').forEach(i => i.onchange = () => { livraison.mode = i.value; appliquer(); });
   appliquer();
 })();
+
+if (!CAISSE_URL) {
+  const info = document.querySelector('#tiroir .info'), logos = document.querySelector('#tiroir .moyens');
+  if (info) info.textContent = 'Reine confirme votre commande et le paiement sur WhatsApp. Hors Union européenne, des droits de douane peuvent être demandés à la livraison.';
+  if (logos) logos.style.display = 'none';
+}
