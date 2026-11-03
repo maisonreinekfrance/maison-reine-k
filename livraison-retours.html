@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=202611031257">
+<link rel="stylesheet" href="css/style.css?v=202611031709">
 </head>
 <body>
 
@@ -159,29 +159,11 @@
   <div class="tiroir-tete"><h3>Votre panier</h3><button class="tiroir-fermer" id="fermer-panier" aria-label="Fermer">×</button></div>
   <div class="tiroir-corps" id="lignes"></div>
   <div class="tiroir-pied" id="pied-panier">
-    <div class="livraison-choix">
-      <label for="adr-nom">Adresse de livraison</label>
-      <div class="adresse" id="adresse-livraison">
-        <input id="adr-nom" name="name" autocomplete="name" placeholder="Prénom et nom">
-        <input id="adr-ligne1" name="address-line1" autocomplete="address-line1" placeholder="Adresse (numéro et rue)">
-        <input id="adr-ligne2" name="address-line2" autocomplete="address-line2" placeholder="Complément (bâtiment, étage…) facultatif">
-        <div class="adr-ligne"><input id="adr-cp" name="postal-code" autocomplete="postal-code" placeholder="Code postal"><input id="adr-ville" name="address-level2" autocomplete="address-level2" placeholder="Ville"></div>
-        <select id="zone-livraison" autocomplete="country">
-          <option value="">Pays</option>
-        </select>
-      </div>
-      <div class="modes" id="modes-fr">
-        <label><input type="radio" name="mode-livraison" value="domicile" checked> À domicile</label>
-        <label><input type="radio" name="mode-livraison" value="relais"> Point retrait ou locker</label>
-      </div>
-    </div>
-    <div class="total-ligne petit"><span>Sous-total</span><b id="total-panier">0 €</b></div>
-    <div class="total-ligne petit"><span>Livraison Colissimo</span><b id="frais-livraison">—</b></div>
-    <div class="total-ligne"><span>Total</span><b id="total-commande">0 €</b></div>
-    <p class="info">Paiement sécurisé par Stripe. Hors Union européenne, des droits de douane peuvent être demandés à la livraison.</p>
+    <div class="total-ligne"><span>Sous-total</span><b id="total-panier">0 €</b></div>
+    <p class="info">Adresse, livraison et code de réduction à l’étape suivante. Paiement sécurisé par Stripe.</p>
     <button type="button" class="btn btn-payer" id="payer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-      Payer par carte
+      Passer la commande
     </button>
     <a href="#" class="btn btn-sombre" id="payer-wa" target="_blank" rel="noopener">Commander sur WhatsApp</a>
     <div class="moyens"><span>VISA</span><span>MASTERCARD</span><span>CB</span><span>APPLE PAY</span><span>GOOGLE PAY</span></div>
@@ -218,6 +200,6 @@
   <a href="https://wa.me/33661093864?text=Bonjour%20Maison%20Reine%20K%2C%20je%20souhaite%20prendre%20rendez-vous." target="_blank" rel="noopener">Réserver</a>
 </div>
 
-<script src="js/site.js?v=202611031257"></script>
+<script src="js/site.js?v=202611031709"></script>
 </body>
 </html>

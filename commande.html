@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commande | Maison Reine K</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--fond:#fff;--fond-2:#f5f5f5;--trait:#dedede;--texte:#1c1b1b;--gris:#707070;--accent:#1c1b1b;--erreur:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:'Jost',system-ui,sans-serif;color:var(--texte);background:var(--fond);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.cmd-tete{border-bottom:1px solid var(--trait);background:#fff}
+.cmd-tete .in{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.cmd-tete img{height:52px;width:auto;display:block}
+.cmd-tete a.retour{font-size:.85rem;color:var(--gris);text-decoration:none}
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:calc(100vh - 81px)}
+.cmd-gauche{padding:36px 48px 60px;display:flex;justify-content:flex-end;border-right:1px solid var(--trait)}
+.cmd-droite{background:var(--fond-2);padding:36px 48px}
+.cmd-gauche .in{width:100%;max-width:560px}
+.cmd-droite .in{width:100%;max-width:440px;position:sticky;top:24px}
+h2{font-size:1.3rem;font-weight:500;margin:28px 0 12px}
+h2:first-child{margin-top:0}
+.sous{color:var(--gris);font-size:.9rem;margin:-6px 0 12px}
+.champ{position:relative;margin-bottom:12px}
+.champ input,.champ select{width:100%;height:52px;padding:16px 14px 4px;border:1px solid var(--trait);border-radius:8px;font:inherit;font-size:.95rem;background:#fff;color:var(--texte);outline:none;appearance:none}
+.champ select{padding-top:18px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23707070' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.champ label{position:absolute;left:15px;top:15px;color:var(--gris);font-size:.95rem;pointer-events:none;transition:.15s}
+.champ input:focus,.champ select:focus{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.champ input:focus+label,.champ input:not(:placeholder-shown)+label,.champ select+label{top:6px;font-size:.72rem}
+.champ.faux input{border-color:var(--erreur)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.duo .champ{margin-bottom:12px}
+.attente{background:var(--fond-2);border-radius:8px;padding:18px 20px;color:var(--gris);font-size:.93rem}
+.options{border:1px solid var(--trait);border-radius:8px;overflow:hidden}
+.option{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;border-bottom:1px solid var(--trait)}
+.option:last-child{border-bottom:0}
+.option input{accent-color:var(--accent);width:18px;height:18px}
+.option .nom{flex:1}
+.option small{display:block;color:var(--gris);font-size:.82rem}
+.option.choisie{background:#f8f8f8;box-shadow:inset 0 0 0 1px var(--accent)}
+#point-retrait{margin-top:12px}
+.case{display:flex;gap:10px;align-items:center;margin:16px 0 4px;cursor:pointer;font-size:.95rem}
+.case input{accent-color:var(--accent);width:18px;height:18px}
+#facturation{margin-top:12px}
+#paiement-stripe{min-height:120px}
+.btn-cmd{width:100%;height:56px;margin-top:24px;background:var(--accent);color:#fff;border:0;border-radius:8px;font:inherit;font-size:1.05rem;font-weight:500;cursor:pointer}
+.btn-cmd:hover{background:#3a3a3a}
+.btn-cmd:disabled{opacity:.5;cursor:wait}
+.message{color:var(--erreur);font-size:.9rem;margin-top:12px;min-height:1em}
+.legal{color:var(--gris);font-size:.8rem;margin-top:18px}
+.legal a{color:var(--gris)}
+.art{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.art .vign{position:relative;width:64px;height:64px;flex:none;border:1px solid var(--trait);border-radius:8px;background:#fff}
+.art .vign img{width:100%;height:100%;object-fit:cover;border-radius:7px;display:block}
+.art .vign span{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#1c1b1b;color:#fff;font-size:.75rem;display:grid;place-items:center;font-weight:500}
+.art .nom{flex:1;font-size:.93rem}
+.art .nom small{display:block;color:var(--gris);font-size:.8rem}
+.art b{font-weight:400;font-size:.93rem;white-space:nowrap}
+.code{display:flex;gap:10px;margin:22px 0}
+.code .champ{flex:1;margin:0}
+.code button{height:52px;padding:0 18px;border:1px solid var(--trait);border-radius:8px;background:#ededed;font:inherit;font-weight:500;color:var(--gris);cursor:pointer}
+.code button.actif{background:var(--accent);border-color:var(--accent);color:#fff}
+#code-message{font-size:.85rem;margin:-14px 0 16px;color:var(--erreur)}
+#code-message.ok{color:#2e7d32}
+.ligne-t{display:flex;justify-content:space-between;margin:8px 0;font-size:.95rem}
+.ligne-t .gris{color:var(--gris)}
+.ligne-t.total{font-size:1.25rem;font-weight:500;margin-top:18px}
+.ligne-t.total small{font-size:.75rem;color:var(--gris);font-weight:400;margin-right:6px}
+.retirer{border:0;background:none;color:var(--gris);text-decoration:underline;cursor:pointer;font:inherit;font-size:.8rem;margin-left:6px}
+.vide,.merci{max-width:560px;margin:80px auto;padding:0 24px;text-align:center}
+.vide h1,.merci h1{font-weight:500;font-size:1.6rem;margin-bottom:10px}
+.vide a,.merci a{display:inline-block;margin-top:20px;padding:14px 26px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+.recap-mobile{display:none}
+@media (max-width:900px){
+  .cmd{grid-template-columns:1fr}
+  .cmd-gauche{padding:24px 16px 48px;border-right:0;order:2;justify-content:center}
+  .cmd-droite{padding:0;order:1;border-bottom:1px solid var(--trait)}
+  .cmd-droite .in{max-width:none;position:static;padding:0 16px 8px;display:none}
+  .cmd-droite.ouvert .in{display:block}
+  .recap-mobile{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px;border:0;background:var(--fond-2);font:inherit;font-size:.95rem;cursor:pointer}
+  .recap-mobile b{font-size:1.05rem;font-weight:500}
+  .cmd-tete .in{padding:10px 16px}
+  .cmd-tete img{height:44px}
+}
+</style>
+<script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<header class="cmd-tete"><div class="in">
+  <a href="index.html"><img src="img/logo-rk.png" alt="Maison Reine K" width="42" height="52"></a>
+  <a href="boutique.html" class="retour">← Continuer mes achats</a>
+</div></header>
+
+<div id="cmd-vide" class="vide" hidden>
+  <h1>Votre panier est vide</h1>
+  <p>Ajoutez des produits avant de passer commande.</p>
+  <a href="boutique.html">Voir la boutique</a>
+</div>
+
+<div id="cmd-merci" class="merci" hidden>
+  <h1>Merci pour votre commande</h1>
+  <p id="merci-texte">Votre paiement est bien reçu. Vous allez recevoir un e-mail de confirmation.</p>
+  <a href="index.html">Retour au site</a>
+</div>
+
+<main class="cmd" id="cmd">
+  <section class="cmd-gauche"><form class="in" id="form-cmd" novalidate>
+    <h2>Contact</h2>
+    <div class="champ"><input id="email" type="email" autocomplete="email" placeholder=" " required><label for="email">E-mail</label></div>
+
+    <h2>Livraison</h2>
+    <div class="champ"><select id="pays" autocomplete="country"></select><label for="pays">Pays / région</label></div>
+    <div class="duo">
+      <div class="champ"><input id="prenom" autocomplete="given-name" placeholder=" " required><label for="prenom">Prénom</label></div>
+      <div class="champ"><input id="nom" autocomplete="family-name" placeholder=" " required><label for="nom">Nom</label></div>
+    </div>
+    <div class="champ"><input id="ligne1" autocomplete="address-line1" placeholder=" " required><label for="ligne1">Adresse</label></div>
+    <div class="champ"><input id="ligne2" autocomplete="address-line2" placeholder=" "><label for="ligne2">Appartement, bâtiment, étage (facultatif)</label></div>
+    <div class="duo">
+      <div class="champ"><input id="cp" autocomplete="postal-code" placeholder=" " required><label for="cp">Code postal</label></div>
+      <div class="champ"><input id="ville" autocomplete="address-level2" placeholder=" " required><label for="ville">Ville</label></div>
+    </div>
+    <div class="champ"><input id="tel" type="tel" autocomplete="tel" placeholder=" " required><label for="tel">Téléphone (pour le suivi Colissimo)</label></div>
+
+    <h2>Mode d’expédition</h2>
+    <div id="expedition"></div>
+
+    <h2>Paiement</h2>
+    <p class="sous">Toutes les transactions sont sécurisées et chiffrées.</p>
+    <div id="paiement-stripe"></div>
+    <label class="case"><input type="checkbox" id="meme-adresse" checked> Utiliser l’adresse d’expédition comme adresse de facturation</label>
+    <div id="facturation" hidden>
+      <div class="champ"><input id="f-nom" autocomplete="billing name" placeholder=" "><label for="f-nom">Prénom et nom</label></div>
+      <div class="champ"><input id="f-ligne1" autocomplete="billing address-line1" placeholder=" "><label for="f-ligne1">Adresse</label></div>
+      <div class="duo">
+        <div class="champ"><input id="f-cp" autocomplete="billing postal-code" placeholder=" "><label for="f-cp">Code postal</label></div>
+        <div class="champ"><input id="f-ville" autocomplete="billing address-level2" placeholder=" "><label for="f-ville">Ville</label></div>
+      </div>
+      <div class="champ"><select id="f-pays" autocomplete="billing country"></select><label for="f-pays">Pays</label></div>
+    </div>
+
+    <button type="submit" class="btn-cmd" id="btn-payer">Payer maintenant</button>
+    <p class="message" id="message" role="alert"></p>
+    <p class="legal" id="legal">En payant, vous acceptez nos <a href="cgv.html" target="_blank">conditions générales de vente</a>.</p>
+  </form></section>
+
+  <aside class="cmd-droite" id="recap">
+    <button type="button" class="recap-mobile" id="recap-bouton"><span>Afficher le récapitulatif ▾</span><b id="total-mobile">0,00 €</b></button>
+    <div class="in">
+      <div id="articles"></div>
+      <div class="code">
+        <div class="champ"><input id="code" placeholder=" " autocomplete="off"><label for="code">Code de réduction</label></div>
+        <button type="button" id="code-valider">Valider</button>
+      </div>
+      <p id="code-message"></p>
+      <div class="ligne-t"><span>Sous-total</span><span id="t-sous">0,00 €</span></div>
+      <div class="ligne-t" id="l-remise" hidden><span>Réduction <b id="t-code"></b><button type="button" class="retirer" id="code-retirer">Retirer</button></span><span id="t-remise"></span></div>
+      <div class="ligne-t"><span>Expédition</span><span id="t-exp" class="gris">Saisir une adresse d’expédition</span></div>
+      <div class="ligne-t total"><span>Total</span><span><small>EUR</small><span id="t-total">0,00 €</span></span></div>
+    </div>
+  </aside>
+</main>
+<script>
+const CAISSE = 'https://caisse-maison-reine-k.maisonreinek-france.workers.dev';
+const $ = id => document.getElementById(id);
+const eur = c => (c / 100).toLocaleString('fr-FR', {style: 'currency', currency: 'EUR'});
+const LIVRAISON = {FR: [1200, 1700], UE: [2000, 3000], CH: [3000, 4000], ZC: [4000, 5000]};
+const PAYS = {FR: {France: 'FR', Monaco: 'MC'},
+  UE: {Allemagne:'DE', Autriche:'AT', Belgique:'BE', Bulgarie:'BG', Chypre:'CY', Croatie:'HR', Danemark:'DK', Espagne:'ES', Estonie:'EE', Finlande:'FI', Grèce:'GR', Hongrie:'HU', Irlande:'IE', Italie:'IT', Lettonie:'LV', Lituanie:'LT', Luxembourg:'LU', Malte:'MT', 'Pays-Bas':'NL', Pologne:'PL', Portugal:'PT', 'République tchèque':'CZ', Roumanie:'RO', Slovaquie:'SK', Slovénie:'SI', Suède:'SE'},
+  CH: {Suisse:'CH', Liechtenstein:'LI'}, ZC: {'États-Unis':'US', Canada:'CA'}};
+const ZONE = {}; Object.entries(PAYS).forEach(([z, l]) => Object.values(l).forEach(c => ZONE[c] = z));
+const OPTIONS_PAYS = Object.values(PAYS).flatMap(l => Object.entries(l)).sort((a, b) => a[0].localeCompare(b[0], 'fr')).map(([n, c]) => `<option value="${c}">${n}</option>`).join('');
+
+let panier = [];
+try { panier = JSON.parse(localStorage.getItem('rk-panier') || '[]'); } catch(e) {}
+panier = panier.filter(x => x && x.id && x.q > 0);
+let reduction = null;   // {code, remise, libelle}
+let mode = 'domicile';
+let stripe, elements;
+
+const champs = ['email', 'prenom', 'nom', 'ligne1', 'ligne2', 'cp', 'ville', 'tel', 'pays'];
+function sauverSaisie() {
+  const d = {}; champs.forEach(k => d[k] = $(k).value);
+  d.mode = mode;
+  try { localStorage.setItem('rk-commande', JSON.stringify(d)); } catch(e) {}
+}
+function reprendreSaisie() {
+  let d = {};
+  try { d = JSON.parse(localStorage.getItem('rk-commande') || 'null'); } catch(e) {}
+  if (!d) {   // adresse saisie dans l'ancien panier
+    try {
+      const l = JSON.parse(localStorage.getItem('rk-livraison') || '{}');
+      const [p, ...n] = (l.nom || '').trim().split(' ');
+      d = {prenom: p || '', nom: n.join(' '), ligne1: l.ligne1, ligne2: l.ligne2, cp: l.cp, ville: l.ville, pays: l.pays, mode: l.mode};
+    } catch(e) { d = {}; }
+  }
+  champs.forEach(k => { if (d[k]) $(k).value = d[k]; });
+  if (!$('pays').value) $('pays').value = 'FR';
+  if (d.mode) mode = d.mode;
+}
+
+const nb = () => panier.reduce((t, x) => t + x.q, 0);
+const sousTotal = () => panier.reduce((t, x) => t + Math.round(x.prix * 100) * x.q, 0);
+const zone = () => ZONE[$('pays').value];
+const adresseOk = () => !!(zone() && $('prenom').value.trim() && $('nom').value.trim() && $('ligne1').value.trim() && $('cp').value.trim() && $('ville').value.trim());
+function frais() {
+  if (!adresseOk()) return null;
+  return LIVRAISON[zone()][nb() <= 3 ? 0 : 1] - (zone() === 'FR' && mode === 'relais' ? 100 : 0);
+}
+const total = () => sousTotal() - (reduction ? reduction.remise : 0) + (frais() || 0);
+
+function afficherArticles() {
+  $('articles').innerHTML = panier.map(x => `<div class="art">
+    <div class="vign"><img src="${x.img}" alt=""><span>${x.q}</span></div>
+    <div class="nom">${x.nom}${x.v ? `<small>${x.v}</small>` : ''}</div>
+    <b>${eur(Math.round(x.prix * 100) * x.q)}</b></div>`).join('');
+}
+
+function afficherExpedition() {
+  const z = zone(), n = nb() <= 3 ? 0 : 1;
+  if (!adresseOk()) {
+    $('expedition').innerHTML = '<div class="attente">Saisissez votre adresse d’expédition pour voir les modes d’expédition disponibles.</div>';
+    return;
+  }
+  const opts = z === 'FR'
+    ? [['domicile', 'Colissimo suivi · à domicile', '2 à 3 jours ouvrés après expédition', LIVRAISON.FR[n]],
+       ['relais', 'Colissimo · point retrait ou locker', 'Vous indiquez le point de votre choix', LIVRAISON.FR[n] - 100]]
+    : [['domicile', 'Colissimo suivi international', 'Des droits de douane peuvent être demandés hors Union européenne', LIVRAISON[z][n]]];
+  if (z !== 'FR') mode = 'domicile';
+  const point = $('point') ? $('point').value : '';
+  $('expedition').innerHTML = '<div class="options">' + opts.map(([v, nom, info, prix]) =>
+    `<label class="option${mode === v ? ' choisie' : ''}"><input type="radio" name="mode" value="${v}"${mode === v ? ' checked' : ''}>
+      <span class="nom">${nom}<small>${info}</small></span><b>${eur(prix)}</b></label>`).join('') + '</div>'
+    + (z === 'FR' && mode === 'relais' ? `<div class="champ" id="point-retrait"><input id="point" placeholder=" "><label for="point">Point retrait ou locker choisi (nom et adresse)</label></div>` : '');
+  if ($('point')) $('point').value = point;
+  $('expedition').querySelectorAll('input[name=mode]').forEach(i => i.onchange = () => { mode = i.value; sauverSaisie(); majTout(); });
+}
+
+function majTotaux() {
+  const f = frais();
+  $('t-sous').textContent = eur(sousTotal());
+  $('t-exp').textContent = f === null ? 'Saisir une adresse d’expédition' : eur(f);
+  $('t-exp').classList.toggle('gris', f === null);
+  $('l-remise').hidden = !reduction;
+  if (reduction) { $('t-code').textContent = reduction.code; $('t-remise').textContent = '−' + eur(reduction.remise); }
+  $('t-total').textContent = eur(total());
+  $('total-mobile').textContent = eur(total());
+  if (elements) elements.update({amount: total()});
+}
+let derniereCle = '';
+function majTout() {
+  const cle = [adresseOk(), zone(), mode].join('|');
+  if (cle !== derniereCle) { derniereCle = cle; afficherExpedition(); }
+  majTotaux();
+}
+
+async function appelCaisse(corps) {
+  const r = await fetch(CAISSE, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(corps)});
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.erreur || 'La caisse ne répond pas');
+  return d;
+}
+const articles = () => panier.map(x => ({id: x.id, q: x.q}));
+
+async function validerCode() {
+  const code = $('code').value.trim();
+  if (!code) return;
+  $('code-valider').disabled = true;
+  $('code-message').className = ''; $('code-message').textContent = '';
+  try {
+    reduction = await appelCaisse({action: 'code', code, articles: articles()});
+    $('code-message').className = 'ok'; $('code-message').textContent = 'Code ' + reduction.code + ' appliqué (' + reduction.libelle + ')';
+    $('code').value = '';
+  } catch(e) { reduction = null; $('code-message').textContent = e.message; }
+  $('code-valider').disabled = false;
+  majTotaux();
+}
+
+function verifierFormulaire() {
+  let premier = null;
+  const requis = ['email', 'prenom', 'nom', 'ligne1', 'cp', 'ville', 'tel'];
+  if (!$('meme-adresse').checked) requis.push('f-nom', 'f-ligne1', 'f-cp', 'f-ville');
+  requis.forEach(k => {
+    const v = $(k).value.trim();
+    const faux = !v || (k === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));
+    $(k).parentNode.classList.toggle('faux', faux);
+    if (faux && !premier) premier = $(k);
+  });
+  if (premier) { premier.focus(); return 'Merci de compléter les champs en rouge.'; }
+  if (zone() === 'FR' && mode === 'relais' && !$('point').value.trim()) { $('point').focus(); return 'Indiquez votre point retrait ou locker.'; }
+  return '';
+}
+
+function facturation() {
+  const nomComplet = ($('prenom').value.trim() + ' ' + $('nom').value.trim()).trim();
+  const meme = $('meme-adresse').checked;
+  return {
+    name: meme ? nomComplet : $('f-nom').value.trim(),
+    email: $('email').value.trim(),
+    phone: $('tel').value.trim(),
+    address: meme
+      ? {line1: $('ligne1').value.trim(), line2: $('ligne2').value.trim(), postal_code: $('cp').value.trim(), city: $('ville').value.trim(), country: $('pays').value, state: ''}
+      : {line1: $('f-ligne1').value.trim(), line2: '', postal_code: $('f-cp').value.trim(), city: $('f-ville').value.trim(), country: $('f-pays').value, state: ''},
+  };
+}
+
+async function payer(e) {
+  e.preventDefault();
+  const msg = $('message'); msg.textContent = '';
+  const err = verifierFormulaire();
+  if (err) { msg.textContent = err; return; }
+  const b = $('btn-payer'); b.disabled = true; b.textContent = 'Paiement en cours…';
+  const fin = t => { b.disabled = false; b.textContent = 'Payer maintenant'; msg.textContent = t || ''; };
+  try {
+    const s = await elements.submit();
+    if (s.error) return fin(s.error.message);
+    const r = await appelCaisse({action: 'intention', articles: articles(), email: $('email').value.trim(), tel: $('tel').value.trim(),
+      mode, point: $('point') ? $('point').value.trim() : '', code: reduction ? reduction.code : '',
+      adresse: {nom: ($('prenom').value.trim() + ' ' + $('nom').value.trim()).trim(), ligne1: $('ligne1').value, ligne2: $('ligne2').value, cp: $('cp').value, ville: $('ville').value, pays: $('pays').value}});
+    if (r.montant !== total()) { elements.update({amount: r.montant}); return fin('Le montant a été mis à jour : vérifiez le total puis payez à nouveau.'); }
+    const res = await stripe.confirmPayment({elements, clientSecret: r.secret, redirect: 'if_required',
+      confirmParams: {return_url: location.origin + location.pathname + '?retour=1', payment_method_data: {billing_details: facturation()}}});
+    if (res.error) return fin(res.error.message);
+    terminer(res.paymentIntent);
+  } catch(x) { fin(x.message); }
+}
+
+function terminer(pi) {
+  if (!pi || !['succeeded', 'processing', 'requires_capture'].includes(pi.status)) { $('message').textContent = 'Le paiement n’a pas abouti. Réessayez.'; return; }
+  panier = [];
+  try { localStorage.setItem('rk-panier', '[]'); } catch(e) {}
+  if (pi.status === 'processing') $('merci-texte').textContent = 'Votre paiement est en cours de validation. Vous recevrez un e-mail dès qu’il sera confirmé.';
+  $('cmd').hidden = true; $('cmd-merci').hidden = false;
+  scrollTo(0, 0);
+}
+
+async function demarrer() {
+  ['pays', 'f-pays'].forEach(id => $(id).innerHTML = OPTIONS_PAYS);
+  $('f-pays').value = 'FR';
+  reprendreSaisie();
+  champs.forEach(k => $(k).addEventListener('input', () => { $(k).parentNode.classList.remove('faux'); sauverSaisie(); majTout(); }));
+  $('pays').addEventListener('change', () => { sauverSaisie(); majTout(); });
+  $('meme-adresse').onchange = () => $('facturation').hidden = $('meme-adresse').checked;
+  $('code-valider').onclick = validerCode;
+  $('code').addEventListener('input', () => $('code-valider').classList.toggle('actif', !!$('code').value.trim()));
+  $('code').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); validerCode(); } });
+  $('code-retirer').onclick = () => { reduction = null; $('code-message').textContent = ''; majTotaux(); };
+  $('recap-bouton').onclick = () => { const o = $('recap').classList.toggle('ouvert'); $('recap-bouton').firstElementChild.textContent = (o ? 'Masquer' : 'Afficher') + ' le récapitulatif ' + (o ? '▴' : '▾'); };
+  $('form-cmd').onsubmit = payer;
+  if (panier.some(x => /^(tissage-|tape-in|frontale-|closure-)/.test(x.id)))
+    $('legal').insertAdjacentHTML('afterbegin', 'Commande de cheveux : définitive 48 h après validation, préparée en 4 à 15 jours ouvrés. ');
+  afficherArticles();
+  majTout();
+
+  const cfg = await appelCaisse({action: 'config'});
+  stripe = Stripe(cfg.cle, {locale: 'fr'});
+  elements = stripe.elements({mode: 'payment', amount: total(), currency: 'eur',
+    fonts: [{cssSrc: 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap'}],
+    appearance: {theme: 'stripe', variables: {colorPrimary: '#1c1b1b', colorText: '#1c1b1b', fontFamily: 'Jost, system-ui, sans-serif', borderRadius: '8px', fontSizeBase: '15px', spacingUnit: '4px'}}});
+  elements.create('payment', {layout: {type: 'tabs'}, fields: {billingDetails: {name: 'never', email: 'never', phone: 'never', address: 'never'}},
+    terms: {card: 'never'}}).mount('#paiement-stripe');
+}
+
+(async () => {
+  const q = new URLSearchParams(location.search);
+  if (q.get('retour') && q.get('payment_intent_client_secret')) {   // retour d'une banque, de PayPal ou de Klarna
+    const cfg = await appelCaisse({action: 'config'});
+    stripe = Stripe(cfg.cle, {locale: 'fr'});
+    const {paymentIntent} = await stripe.retrievePaymentIntent(q.get('payment_intent_client_secret'));
+    history.replaceState(null, '', location.pathname);
+    if (paymentIntent && paymentIntent.status !== 'requires_payment_method') return terminer(paymentIntent);
+  }
+  if (!panier.length) { $('cmd').hidden = true; $('cmd-vide').hidden = false; return; }
+  try { await demarrer(); }
+  catch(e) { $('message').textContent = 'Le paiement n’a pas pu démarrer (' + e.message + '). Réessayez dans un instant.'; }
+})();
+</script>
+</body>
+</html>
