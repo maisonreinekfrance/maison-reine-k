@@ -52,13 +52,19 @@ const $ = id => document.getElementById(id);
 // Livraison Colissimo : [jusqu'à 3 produits, au-delà de 3]. France : point retrait ou locker = 1 € de moins.
 const LIVRAISON = {FR: [12, 17], UE: [20, 30], CH: [30, 40], ZC: [40, 50]};
 const NOMS_ZONE = {FR: 'France', UE: 'Union européenne', CH: 'Suisse', ZC: 'États-Unis / Canada'};
-let livraison = {zone: 'FR', mode: 'domicile'};
+// Pays proposés : le pays choisi donne la zone, donc le prix de la livraison.
+const PAYS = {FR: {France: 'FR', Monaco: 'MC'},
+  UE: {Allemagne:'DE', Autriche:'AT', Belgique:'BE', Bulgarie:'BG', Chypre:'CY', Croatie:'HR', Danemark:'DK', Espagne:'ES', Estonie:'EE', Finlande:'FI', Grèce:'GR', Hongrie:'HU', Irlande:'IE', Italie:'IT', Lettonie:'LV', Lituanie:'LT', Luxembourg:'LU', Malte:'MT', 'Pays-Bas':'NL', Pologne:'PL', Portugal:'PT', 'République tchèque':'CZ', Roumanie:'RO', Slovaquie:'SK', Slovénie:'SI', Suède:'SE'},
+  CH: {Suisse:'CH', Liechtenstein:'LI'}, ZC: {'États-Unis':'US', Canada:'CA'}};
+let livraison = {pays: '', zone: '', mode: 'domicile'};
 try { livraison = Object.assign(livraison, JSON.parse(localStorage.getItem('rk-livraison') || '{}')); } catch(e) {}
+if (!livraison.pays) livraison.zone = '';
 const fraisLivraison = nb => {
-  const t = LIVRAISON[livraison.zone] || LIVRAISON.FR;
+  if (!livraison.zone) return 0;
+  const t = LIVRAISON[livraison.zone];
   return t[nb <= 3 ? 0 : 1] - (livraison.zone === 'FR' && livraison.mode === 'relais' ? 1 : 0);
 };
-const libelleLivraison = () => NOMS_ZONE[livraison.zone] + (livraison.zone === 'FR' ? (livraison.mode === 'relais' ? ', point retrait ou locker' : ', à domicile') : '');
+const libelleLivraison = () => (NOMS_ZONE[livraison.zone] || 'pays à préciser') + (livraison.zone === 'FR' ? (livraison.mode === 'relais' ? ', point retrait ou locker' : ', à domicile') : '');
 const tiroir = $('tiroir'), voile = $('voile');
 function ouvrirPanier(){ tiroir.classList.add('ouvert'); voile.classList.add('ouvert'); tiroir.setAttribute('aria-hidden','false'); }
 function fermerPanier(){ tiroir.classList.remove('ouvert'); voile.classList.remove('ouvert'); tiroir.setAttribute('aria-hidden','true'); }
@@ -74,7 +80,11 @@ function rendre(){
   const m = $('nb-panier-m'); if (m) m.textContent = nb;
   $('total-panier').textContent = euro(total);
   const fl = fraisLivraison(nb);
-  if ($('frais-livraison')) { $('frais-livraison').textContent = euro(fl); $('total-commande').textContent = euro(total + fl); }
+  if ($('frais-livraison')) {
+    $('frais-livraison').textContent = livraison.zone ? euro(fl) : 'Choisissez votre pays';
+    $('total-commande').textContent = euro(total + fl);
+    if (CAISSE_URL) { $('payer').disabled = !livraison.zone; $('payer').title = livraison.zone ? '' : 'Choisissez votre pays de livraison'; }
+  }
   $('pied-panier').style.display = nb ? '' : 'none';
   const z = $('lignes');
   if (!nb) { z.innerHTML = '<div class="panier-vide"><p>Votre panier est vide.</p><a href="boutique.html" class="btn btn-sombre" data-fermer>Voir nos produits</a></div>'; return; }
@@ -256,14 +266,16 @@ if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style
 (function(){
   const z = document.getElementById('zone-livraison'), m = document.getElementById('modes-fr');
   if (!z) return;
+  z.innerHTML = '<option value="">Choisissez votre pays</option>' + Object.entries(PAYS).map(([zone, liste]) =>
+    Object.entries(liste).map(([nom, code]) => `<option value="${code}" data-zone="${zone}">${nom}</option>`).join('')).join('');
   const appliquer = () => {
-    z.value = livraison.zone;
+    z.value = livraison.pays;
     m.style.display = livraison.zone === 'FR' ? '' : 'none';
     m.querySelectorAll('input').forEach(i => i.checked = i.value === livraison.mode);
     try { localStorage.setItem('rk-livraison', JSON.stringify(livraison)); } catch(e) {}
     rendre();
   };
-  z.onchange = () => { livraison.zone = z.value; appliquer(); };
+  z.onchange = () => { livraison.pays = z.value; livraison.zone = z.selectedOptions[0].dataset.zone || ''; appliquer(); };
   m.querySelectorAll('input').forEach(i => i.onchange = () => { livraison.mode = i.value; appliquer(); });
   appliquer();
 })();
