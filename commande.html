@@ -27,6 +27,7 @@ a{color:inherit}
 .cmd-droite .in{width:100%;max-width:440px;position:sticky;top:24px}
 h2{font-size:1.3rem;font-weight:500;margin:28px 0 12px}
 h2:first-child{margin-top:0}
+#express-zone[hidden]+h2{margin-top:0}
 .sous{color:var(--gris);font-size:.9rem;margin:-6px 0 12px}
 .champ{position:relative;margin-bottom:12px}
 .champ input,.champ select{width:100%;height:52px;padding:16px 14px 4px;border:1px solid var(--trait);border-radius:8px;font:inherit;font-size:.95rem;background:#fff;color:var(--texte);outline:none;appearance:none}
@@ -91,6 +92,7 @@ h2:first-child{margin-top:0}
   .recap-mobile b{font-size:1.05rem;font-weight:500}
   .cmd-tete .in{padding:10px 16px}
   .cmd-tete img{height:44px}
+  .champ input,.champ select{font-size:16px}   /* sous 16 px, l'iPhone zoome sur le champ */
 }
 </style>
 <script src="https://js.stripe.com/v3/"></script>
@@ -380,7 +382,7 @@ async function demarrer() {
     fonts: [{cssSrc: 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap'}],
     appearance: {theme: 'stripe', variables: {colorPrimary: '#1c1b1b', colorText: '#1c1b1b', fontFamily: 'Jost, system-ui, sans-serif', borderRadius: '8px', fontSizeBase: '15px', spacingUnit: '4px'}}});
   elements.create('payment', {layout: {type: 'tabs'}, fields: {billingDetails: {name: 'never', email: 'never', phone: 'never', address: 'never'}},
-    wallets: {applePay: 'never', googlePay: 'never'}, terms: {card: 'never'}}).mount('#paiement-stripe');
+    wallets: {applePay: 'never', googlePay: 'never', link: 'never'}, terms: {card: 'never'}}).mount('#paiement-stripe');
   express();
 }
 
