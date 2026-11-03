@@ -42,7 +42,7 @@ if(zone){
 // ===== Panier =====
 // Adresse de la caisse (Cloudflare Worker). Vide = mode démonstration, aucun paiement réel.
 // Exemple : 'https://caisse-reine-k.MONCOMPTE.workers.dev'
-const CAISSE_URL = '';
+const CAISSE_URL = 'https://caisse-maison-reine-k.maisonreinek-france.workers.dev';
 const WA = 'https://wa.me/33661093864';
 const euro = n => n.toLocaleString('fr-FR') + ' €';
 let panier = [];
@@ -272,4 +272,8 @@ if (!CAISSE_URL) {
   const info = document.querySelector('#tiroir .info'), logos = document.querySelector('#tiroir .moyens');
   if (info) info.textContent = 'Reine confirme votre commande et le paiement sur WhatsApp. Hors Union européenne, des droits de douane peuvent être demandés à la livraison.';
   if (logos) logos.style.display = 'none';
+} else {
+  // Paiement carte actif : la commande se fait sur Stripe, pas sur WhatsApp
+  const wa = document.getElementById('payer-wa');
+  if (wa) wa.style.display = 'none';
 }
