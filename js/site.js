@@ -56,11 +56,13 @@ const NOMS_ZONE = {FR: 'France', UE: 'Union européenne', CH: 'Suisse', ZC: 'Ét
 const PAYS = {FR: {France: 'FR', Monaco: 'MC'},
   UE: {Allemagne:'DE', Autriche:'AT', Belgique:'BE', Bulgarie:'BG', Chypre:'CY', Croatie:'HR', Danemark:'DK', Espagne:'ES', Estonie:'EE', Finlande:'FI', Grèce:'GR', Hongrie:'HU', Irlande:'IE', Italie:'IT', Lettonie:'LV', Lituanie:'LT', Luxembourg:'LU', Malte:'MT', 'Pays-Bas':'NL', Pologne:'PL', Portugal:'PT', 'République tchèque':'CZ', Roumanie:'RO', Slovaquie:'SK', Slovénie:'SI', Suède:'SE'},
   CH: {Suisse:'CH', Liechtenstein:'LI'}, ZC: {'États-Unis':'US', Canada:'CA'}};
-let livraison = {pays: '', zone: '', mode: 'domicile'};
+let livraison = {pays: '', zone: '', mode: 'domicile', nom: '', ligne1: '', ligne2: '', cp: '', ville: ''};
 try { livraison = Object.assign(livraison, JSON.parse(localStorage.getItem('rk-livraison') || '{}')); } catch(e) {}
 if (!livraison.pays) livraison.zone = '';
+// Le prix de la livraison n'apparaît qu'une fois l'adresse complète
+const adresseComplete = () => !!(livraison.zone && livraison.nom.trim() && livraison.ligne1.trim() && livraison.cp.trim() && livraison.ville.trim());
 const fraisLivraison = nb => {
-  if (!livraison.zone) return 0;
+  if (!adresseComplete()) return 0;
   const t = LIVRAISON[livraison.zone];
   return t[nb <= 3 ? 0 : 1] - (livraison.zone === 'FR' && livraison.mode === 'relais' ? 1 : 0);
 };
@@ -81,9 +83,11 @@ function rendre(){
   $('total-panier').textContent = euro(total);
   const fl = fraisLivraison(nb);
   if ($('frais-livraison')) {
-    $('frais-livraison').textContent = livraison.zone ? euro(fl) : 'Choisissez votre pays';
+    const ok = adresseComplete();
+    $('frais-livraison').textContent = ok ? euro(fl) : '—';
+    $('frais-livraison').title = ok ? '' : 'Ajoutez votre adresse de livraison';
     $('total-commande').textContent = euro(total + fl);
-    if (CAISSE_URL) { $('payer').disabled = !livraison.zone; $('payer').title = livraison.zone ? '' : 'Choisissez votre pays de livraison'; }
+    if (CAISSE_URL) { $('payer').disabled = !ok; $('payer').title = ok ? '' : 'Ajoutez votre adresse de livraison'; }
   }
   $('pied-panier').style.display = nb ? '' : 'none';
   const z = $('lignes');
@@ -136,7 +140,7 @@ async function payerPourDeVrai(){
   try {
     // On n'envoie que les références et les quantités : les prix sont fixés par la caisse.
     const r = await fetch(CAISSE_URL, {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({articles: panier.map(x => ({id:x.id, q:x.q})), zone: livraison.zone, mode: livraison.mode})});
+      body: JSON.stringify({articles: panier.map(x => ({id:x.id, q:x.q})), zone: livraison.zone, mode: livraison.mode, adresse: {nom: livraison.nom, ligne1: livraison.ligne1, ligne2: livraison.ligne2, cp: livraison.cp, ville: livraison.ville, pays: livraison.pays}})});
     const d = await r.json();
     if (!r.ok || !d.url) throw new Error(d.erreur || 'Réponse inattendue');
     location.href = d.url;
@@ -266,7 +270,7 @@ if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style
 (function(){
   const z = document.getElementById('zone-livraison'), m = document.getElementById('modes-fr');
   if (!z) return;
-  z.innerHTML = '<option value="">Choisissez votre pays</option>' + Object.entries(PAYS).map(([zone, liste]) =>
+  z.innerHTML = '<option value="">Pays</option>' + Object.entries(PAYS).map(([zone, liste]) =>
     Object.entries(liste).map(([nom, code]) => `<option value="${code}" data-zone="${zone}">${nom}</option>`).join('')).join('');
   const appliquer = () => {
     z.value = livraison.pays;
@@ -276,6 +280,11 @@ if (!CAISSE_URL) { const pb = document.getElementById('payer'); if (pb) pb.style
     rendre();
   };
   z.onchange = () => { livraison.pays = z.value; livraison.zone = z.selectedOptions[0].dataset.zone || ''; appliquer(); };
+  ['nom', 'ligne1', 'ligne2', 'cp', 'ville'].forEach(k => {
+    const i = document.getElementById('adr-' + k);
+    i.value = livraison[k] || '';
+    i.oninput = () => { livraison[k] = i.value; try { localStorage.setItem('rk-livraison', JSON.stringify(livraison)); } catch(e) {} rendre(); };
+  });
   m.querySelectorAll('input').forEach(i => i.onchange = () => { livraison.mode = i.value; appliquer(); });
   appliquer();
 })();
