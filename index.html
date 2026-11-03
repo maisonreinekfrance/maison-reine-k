@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=202611031215">
+<link rel="stylesheet" href="css/style.css?v=202611031226">
 </head>
 <body>
 
@@ -292,12 +292,9 @@
   <div class="tiroir-corps" id="lignes"></div>
   <div class="tiroir-pied" id="pied-panier">
     <div class="livraison-choix">
-      <label for="zone-livraison">Livraison</label>
+      <label for="zone-livraison">Pays de livraison</label>
       <select id="zone-livraison">
-        <option value="FR">France et Monaco</option>
-        <option value="UE">Union européenne</option>
-        <option value="CH">Suisse</option>
-        <option value="ZC">États-Unis et Canada</option>
+        <option value="">Choisissez votre pays</option>
       </select>
       <div class="modes" id="modes-fr">
         <label><input type="radio" name="mode-livraison" value="domicile" checked> À domicile</label>
@@ -305,7 +302,7 @@
       </div>
     </div>
     <div class="total-ligne petit"><span>Sous-total</span><b id="total-panier">0 €</b></div>
-    <div class="total-ligne petit"><span>Livraison Colissimo</span><b id="frais-livraison">—</b></div>
+    <div class="total-ligne petit"><span>Livraison Colissimo</span><b id="frais-livraison">Choisissez votre pays</b></div>
     <div class="total-ligne"><span>Total</span><b id="total-commande">0 €</b></div>
     <p class="info">Paiement sécurisé par Stripe. Hors Union européenne, des droits de douane peuvent être demandés à la livraison.</p>
     <button type="button" class="btn btn-payer" id="payer">
@@ -347,6 +344,6 @@
   <a href="https://wa.me/33661093864?text=Bonjour%20Maison%20Reine%20K%2C%20je%20souhaite%20prendre%20rendez-vous." target="_blank" rel="noopener">Réserver</a>
 </div>
 
-<script src="js/site.js?v=202611031215"></script>
+<script src="js/site.js?v=202611031226"></script>
 </body>
 </html>
