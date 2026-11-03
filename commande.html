@@ -176,7 +176,7 @@ const PAYS = {FR: {France: 'FR', Monaco: 'MC'},
   UE: {Allemagne:'DE', Autriche:'AT', Belgique:'BE', Bulgarie:'BG', Chypre:'CY', Croatie:'HR', Danemark:'DK', Espagne:'ES', Estonie:'EE', Finlande:'FI', Grèce:'GR', Hongrie:'HU', Irlande:'IE', Italie:'IT', Lettonie:'LV', Lituanie:'LT', Luxembourg:'LU', Malte:'MT', 'Pays-Bas':'NL', Pologne:'PL', Portugal:'PT', 'République tchèque':'CZ', Roumanie:'RO', Slovaquie:'SK', Slovénie:'SI', Suède:'SE'},
   CH: {Suisse:'CH', Liechtenstein:'LI'}, ZC: {'États-Unis':'US', Canada:'CA'}};
 const ZONE = {}; Object.entries(PAYS).forEach(([z, l]) => Object.values(l).forEach(c => ZONE[c] = z));
-const OPTIONS_PAYS = Object.values(PAYS).flatMap(l => Object.entries(l)).sort((a, b) => a[0].localeCompare(b[0], 'fr')).map(([n, c]) => `<option value="${c}">${n}</option>`).join('');
+const OPTIONS_PAYS = Object.values(PAYS).flatMap(l => Object.entries(l)).sort((a, b) => a[1] === 'FR' ? -1 : b[1] === 'FR' ? 1 : a[0].localeCompare(b[0], 'fr')).map(([n, c]) => `<option value="${c}">${n}</option>`).join('');
 
 let panier = [];
 try { panier = JSON.parse(localStorage.getItem('rk-panier') || '[]'); } catch(e) {}
@@ -361,7 +361,7 @@ async function demarrer() {
 
   const cfg = await appelCaisse({action: 'config'});
   stripe = Stripe(cfg.cle, {locale: 'fr'});
-  elements = stripe.elements({mode: 'payment', amount: total(), currency: 'eur',
+  elements = stripe.elements({mode: 'payment', amount: total(), currency: 'eur', paymentMethodTypes: cfg.moyens,
     fonts: [{cssSrc: 'https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap'}],
     appearance: {theme: 'stripe', variables: {colorPrimary: '#1c1b1b', colorText: '#1c1b1b', fontFamily: 'Jost, system-ui, sans-serif', borderRadius: '8px', fontSizeBase: '15px', spacingUnit: '4px'}}});
   elements.create('payment', {layout: {type: 'tabs'}, fields: {billingDetails: {name: 'never', email: 'never', phone: 'never', address: 'never'}},
