@@ -167,6 +167,37 @@ rendre();
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vu');io.unobserve(x.target)}}),{threshold:.12});
 document.querySelectorAll('.rev').forEach(el=>io.observe(el));
 
+(function(){
+  const g = document.querySelector('.pp-grille'), zoom = g && g.querySelector('.pp-zoom'), scene = g && g.querySelector('.pp-scene');
+  if (!zoom || !matchMedia('(hover:hover) and (min-width:901px)').matches) return;
+  const Z = 2.6, loupe = document.createElement('div');
+  loupe.className = 'pp-loupe'; scene.appendChild(loupe);
+  const cacher = () => { zoom.classList.remove('on'); loupe.classList.remove('on'); };
+  scene.addEventListener('mouseleave', cacher);
+  scene.addEventListener('mousemove', e => {
+    const img = e.target.closest('.pp-diapo:not(.video)') && e.target.closest('.pp-diapo').querySelector('img');
+    if (!img || !img.naturalWidth || e.target.closest('.pp-fl')) { cacher(); return; }
+    const r = img.getBoundingClientRect(), rs = scene.getBoundingClientRect(), rg = g.getBoundingClientRect();
+    const infos = g.querySelector('.pp-infos').getBoundingClientRect();
+    // Taille réelle de l'image affichée (cover ou contain)
+    const contient = getComputedStyle(img).objectFit === 'contain';
+    const k = (contient ? Math.min : Math.max)(r.width / img.naturalWidth, r.height / img.naturalHeight);
+    const lw = img.naturalWidth * k, lh = img.naturalHeight * k, ox = (r.width - lw) / 2, oy = (r.height - lh) / 2;
+    const x = e.clientX - r.left - ox, y = e.clientY - r.top - oy;
+    if (x < 0 || y < 0 || x > lw || y > lh) { cacher(); return; }
+    // Fenêtre d'agrandissement : à droite, à la hauteur de la photo
+    const zw = Math.min(infos.width, rs.width), zh = rs.height;
+    Object.assign(zoom.style, {left: (infos.left - rg.left) + 'px', top: (rs.top - rg.top) + 'px', width: zw + 'px', height: zh + 'px',
+      backgroundImage: `url("${img.currentSrc || img.src}")`, backgroundSize: `${lw * Z}px ${lh * Z}px`});
+    const bx = Math.max(0, Math.min(lw * Z - zw, x * Z - zw / 2)), by = Math.max(0, Math.min(lh * Z - zh, y * Z - zh / 2));
+    zoom.style.backgroundPosition = `-${bx}px -${by}px`;
+    // Loupe : la zone agrandie, sur la photo
+    const w = zw / Z, h = zh / Z;
+    Object.assign(loupe.style, {width: w + 'px', height: h + 'px', left: (r.left - rs.left + ox + bx / Z) + 'px', top: (r.top - rs.top + oy + by / Z) + 'px'});
+    zoom.classList.add('on'); loupe.classList.add('on');
+  });
+})();
+
 // ===== Page produit : galerie, options, quantité, panier, WhatsApp =====
 document.querySelectorAll('[data-pp]').forEach(f => {
   const d = JSON.parse(f.dataset.pp), choix = d.options.map(() => 0);
