@@ -127,7 +127,7 @@ const ab = $('ajout-bundle');
 if (ab) ab.onclick = () => { ajouter({id:'bundle-' + bundle.l, nom:'Mèches RAW · lot de 2 bundles', v:`${bundle.l}″ · ${bundle.l}″ double drawn`, prix:bundle.prix, img:'img/meches-raw.jpg'}); ouvrirPanier(); };
 // Paiement
 $('payer').onclick = () => {
-  if (CAISSE_URL) { payerPourDeVrai(); return; }
+  if (CAISSE_URL) { location.href = 'commande.html'; return; }
   const total = panier.reduce((a,x) => a + x.q * x.prix, 0);
   $('pay-total').textContent = total.toLocaleString('fr-FR', {minimumFractionDigits:2}) + ' €';
   $('pay-items').innerHTML = panier.map(x => `<div class="pay-item"><span>${x.nom}<small>${x.v || ''} · Qté ${x.q}</small></span><span>${(x.prix * x.q).toLocaleString('fr-FR', {minimumFractionDigits:2})} €</span></div>`).join('');
