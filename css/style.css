@@ -813,6 +813,12 @@ footer{padding:64px 0 28px}
   .frise div::before{left:-31px}
 }
 
+.pp-grille{position:relative}
+.pp-zoom{display:none;position:absolute;z-index:5;background:#fff no-repeat;box-shadow:0 10px 40px rgba(0,0,0,.18);pointer-events:none}
+.pp-loupe{display:none;position:absolute;z-index:3;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.7);pointer-events:none}
+.pp-zoom.on,.pp-loupe.on{display:block}
+@media (hover:hover) and (min-width:901px){.pp-diapo:not(.video) img{cursor:crosshair}}
+
 /* ===== Catalogue (soins et cheveux) ===== */
 .catalogue{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .fiche-p{background:#fff;border:1px solid #e7e7e7;display:flex;flex-direction:column}
