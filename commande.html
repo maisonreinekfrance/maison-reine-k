@@ -46,7 +46,15 @@ h2:first-child{margin-top:0}
 .option .nom{flex:1}
 .option small{display:block;color:var(--gris);font-size:.82rem}
 .option.choisie{background:#f8f8f8;box-shadow:inset 0 0 0 1px var(--accent)}
-#point-retrait{margin-top:12px}
+#relais{margin-top:12px}
+.relais-cherche{display:flex;gap:8px}
+.relais-cherche .champ{flex:1;margin:0}
+.relais-cherche button{height:52px;padding:0 16px;border:0;border-radius:8px;background:var(--accent);color:#fff;font:inherit;font-weight:500;cursor:pointer}
+#relais-liste{margin-top:10px}
+#relais-liste .option{align-items:flex-start}
+#relais-liste .option input{margin-top:2px}
+#relais-liste .dist{color:var(--gris);font-size:.82rem;white-space:nowrap}
+.relais-info{color:var(--gris);font-size:.88rem;margin-top:10px}
 .case{display:flex;gap:10px;align-items:center;margin:16px 0 4px;cursor:pointer;font-size:.95rem}
 .case input{accent-color:var(--accent);width:18px;height:18px}
 #facturation{margin-top:12px}
@@ -267,16 +275,68 @@ function afficherExpedition() {
   }
   const opts = z === 'FR'
     ? [['domicile', 'Colissimo suivi · à domicile', '2 à 3 jours ouvrés après expédition', LIVRAISON.FR[n]],
-       ['relais', 'Colissimo · point retrait ou locker', 'Vous indiquez le point de votre choix', LIVRAISON.FR[n] - 100]]
+       ['relais', 'Colissimo · retrait en point relais', 'Bureau de poste ou relais poste près de chez vous', LIVRAISON.FR[n] - 100]]
     : [['domicile', 'Colissimo suivi international', 'Des droits de douane peuvent être demandés hors Union européenne', LIVRAISON[z][n]]];
   if (z !== 'FR') mode = 'domicile';
-  const point = $('point') ? $('point').value : '';
   $('expedition').innerHTML = '<div class="options">' + opts.map(([v, nom, info, prix]) =>
     `<label class="option${mode === v ? ' choisie' : ''}"><input type="radio" name="mode" value="${v}"${mode === v ? ' checked' : ''}>
       <span class="nom">${nom}<small>${info}</small></span><b>${eur(prix)}</b></label>`).join('') + '</div>'
-    + (z === 'FR' && mode === 'relais' ? `<div class="champ" id="point-retrait"><input id="point" placeholder=" "><label for="point">Point retrait ou locker choisi (nom et adresse)</label></div>` : '');
-  if ($('point')) $('point').value = point;
+    + (z === 'FR' && mode === 'relais' ? `<div id="relais">
+      <div class="relais-cherche"><div class="champ"><input id="relais-q" placeholder=" " autocomplete="off"><label for="relais-q">Adresse, code postal ou ville</label></div>
+      <button type="button" id="relais-btn">Rechercher</button></div>
+      <div id="relais-liste"></div><input type="hidden" id="point"></div>` : '');
   $('expedition').querySelectorAll('input[name=mode]').forEach(i => i.onchange = () => { mode = i.value; sauverSaisie(); majTout(); });
+  if ($('relais')) {
+    $('point').value = pointChoisi ? pointChoisi.texte : '';
+    $('relais-q').value = `${$('ligne1').value} ${$('cp').value} ${$('ville').value}`.trim();
+    $('relais-btn').onclick = chercherRelais;
+    $('relais-q').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); chercherRelais(); } };
+    if (pointsTrouves.length && cpCherche === $('cp').value.trim()) afficherRelais();
+    else { pointsTrouves = []; pointChoisi = null; $('point').value = ''; clearTimeout(minuteRelais); minuteRelais = setTimeout(chercherRelais, 700); }
+  }
+}
+
+// Points de retrait Colissimo : bureaux de poste, agences postales et relais poste (données ouvertes de La Poste)
+let pointChoisi = null, pointsTrouves = [], cpCherche = '', minuteRelais;
+const joli = t => String(t || '').toLowerCase().replace(/(^|[\s\-'’])(\S)/g, (m, a, b) => a + b.toUpperCase()).replace(/\s(Bp|Rp|Lpp)$/, '').trim();
+async function chercherRelais() {
+  const q = $('relais-q').value.trim();
+  if (!q) return;
+  cpCherche = $('cp').value.trim();
+  $('relais-liste').innerHTML = '<p class="relais-info">Recherche des points relais…</p>';
+  try {
+    const g = await fetch('https://data.geopf.fr/geocodage/search?limit=1&q=' + encodeURIComponent(q)).then(r => r.json());
+    const f = g.features && g.features[0];
+    if (!f) throw new Error('Adresse introuvable. Essayez avec le code postal.');
+    const [lon, lat] = f.geometry.coordinates;
+    let res = [];
+    for (const rayon of [5000, 20000]) {
+      const d = await fetch(`https://data.laposte.fr/data-fair/api/v1/datasets/laposte-poincont2/lines?size=6&geo_distance=${lon},${lat},${rayon}&select=identifiant_a,libelle_du_site,caracteristique_du_site,adresse,code_postal,localite`).then(r => r.json());
+      res = d.results || [];
+      if (res.length) break;
+    }
+    if (!res.length) throw new Error('Aucun point relais trouvé près de cette adresse.');
+    pointsTrouves = res.sort((a, b) => a._geo_distance - b._geo_distance).map(p => ({
+      id: p.identifiant_a, nom: joli(p.libelle_du_site), type: p.caracteristique_du_site,
+      adr: `${joli(p.adresse)}, ${p.code_postal} ${joli(p.localite)}`, km: p._geo_distance / 1000}));
+    afficherRelais();
+  } catch(e) {
+    $('relais-liste').innerHTML = `<p class="relais-info">${echap(e.message.startsWith('Adresse') || e.message.startsWith('Aucun') ? e.message : 'Recherche impossible pour le moment. Réessayez.')}</p>`;
+  }
+}
+function afficherRelais() {
+  $('relais-liste').innerHTML = '<div class="options">' + pointsTrouves.map((p, i) => {
+    const ok = pointChoisi && pointChoisi.id === p.id;
+    return `<label class="option${ok ? ' choisie' : ''}"><input type="radio" name="relais" value="${i}"${ok ? ' checked' : ''}>
+      <span class="nom">${echap(p.nom)}<small>${echap(p.type)} · ${echap(p.adr)}</small></span>
+      <span class="dist">${p.km < 1 ? Math.round(p.km * 1000) + ' m' : p.km.toFixed(1).replace('.', ',') + ' km'}</span></label>`;
+  }).join('') + '</div>';
+  $('relais-liste').querySelectorAll('input[name=relais]').forEach(i => i.onchange = () => {
+    const p = pointsTrouves[i.value];
+    pointChoisi = {id: p.id, texte: `${p.nom} (${p.type}), ${p.adr} · réf. ${p.id}`};
+    $('point').value = pointChoisi.texte;
+    $('relais-liste').querySelectorAll('.option').forEach((o, k) => o.classList.toggle('choisie', k == i.value));
+  });
 }
 
 const echap = t => String(t || '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
@@ -301,7 +361,7 @@ function majTotaux() {
 }
 let derniereCle = '';
 function majTout() {
-  const cle = [adresseOk(), zone(), mode].join('|');
+  const cle = [adresseOk(), zone(), mode, mode === 'relais' ? $('cp').value.trim() : ''].join('|');
   if (cle !== derniereCle) { derniereCle = cle; afficherExpedition(); }
   majTotaux();
 }
@@ -339,7 +399,7 @@ function verifierFormulaire() {
     if (faux && !premier) premier = $(k);
   });
   if (premier) { premier.focus(); return 'Merci de compléter les champs en rouge.'; }
-  if (zone() === 'FR' && mode === 'relais' && !$('point').value.trim()) { $('point').focus(); return 'Indiquez votre point retrait ou locker.'; }
+  if (zone() === 'FR' && mode === 'relais' && !$('point').value.trim()) { $('relais').scrollIntoView({block: 'center'}); return 'Choisissez votre point relais.'; }
   return '';
 }
 
