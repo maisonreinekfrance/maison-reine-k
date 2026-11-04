@@ -49,7 +49,7 @@ let panier = [];
 try { panier = JSON.parse(localStorage.getItem('rk-panier') || '[]'); } catch(e) { panier = []; }
 const sauver = () => { try { localStorage.setItem('rk-panier', JSON.stringify(panier)); } catch(e) {} };
 const $ = id => document.getElementById(id);
-// Livraison Colissimo : [jusqu'à 3 produits, au-delà de 3]. France : point retrait ou locker = 1 € de moins.
+// Livraison Colissimo : [jusqu'à 3 produits, au-delà de 3]. France : point relais = 1 € de moins.
 const LIVRAISON = {FR: [12, 17], UE: [20, 30], CH: [30, 40], ZC: [40, 50]};
 const NOMS_ZONE = {FR: 'France', UE: 'Union européenne', CH: 'Suisse', ZC: 'États-Unis / Canada'};
 // Pays proposés : le pays choisi donne la zone, donc le prix de la livraison.
@@ -66,7 +66,7 @@ const fraisLivraison = nb => {
   const t = LIVRAISON[livraison.zone];
   return t[nb <= 3 ? 0 : 1] - (livraison.zone === 'FR' && livraison.mode === 'relais' ? 1 : 0);
 };
-const libelleLivraison = () => (NOMS_ZONE[livraison.zone] || 'pays à préciser') + (livraison.zone === 'FR' ? (livraison.mode === 'relais' ? ', point retrait ou locker' : ', à domicile') : '');
+const libelleLivraison = () => (NOMS_ZONE[livraison.zone] || 'pays à préciser') + (livraison.zone === 'FR' ? (livraison.mode === 'relais' ? ', point relais' : ', à domicile') : '');
 const tiroir = $('tiroir'), voile = $('voile');
 function ouvrirPanier(){ tiroir.classList.add('ouvert'); voile.classList.add('ouvert'); tiroir.setAttribute('aria-hidden','false'); }
 function fermerPanier(){ tiroir.classList.remove('ouvert'); voile.classList.remove('ouvert'); tiroir.setAttribute('aria-hidden','true'); }
