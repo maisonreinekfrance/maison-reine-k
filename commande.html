@@ -132,7 +132,7 @@ h2:first-child{margin-top:0}
   <div class="merci-ok" aria-hidden="true">✓</div>
   <h1>Merci pour votre commande</h1>
   <p class="merci-num" id="merci-num"></p>
-  <p id="merci-texte">Votre paiement est bien reçu. Vous allez recevoir un e-mail de confirmation, puis le numéro de suivi Colissimo dès l’envoi.</p>
+  <p id="merci-texte">Votre paiement est bien reçu. Vous allez recevoir un e-mail de confirmation dans quelques minutes (pensez à regarder dans vos courriers indésirables), puis le numéro de suivi Colissimo dès l’envoi.</p>
   <div class="merci-adr" id="merci-adr" hidden></div>
   <p class="merci-q">Une question sur votre commande ?</p>
   <a class="btn-wa" id="merci-wa" href="https://wa.me/33661093864" target="_blank" rel="noopener">
@@ -446,7 +446,10 @@ function terminer(pi) {
   $('merci-num').textContent = 'Commande n° ' + num;
   $('merci-wa').href = 'https://wa.me/33661093864?text=' + encodeURIComponent('Bonjour Maison Reine K, j’ai une question sur ma commande n° ' + num);
   const sh = pi.shipping;
-  if (sh && sh.address) {
+  if (pointChoisi && mode === 'relais') {
+    $('merci-adr').innerHTML = '<b>Retrait en point relais</b>' + echap(pointChoisi.texte.replace(/ · réf\. .*$/, ''));
+    $('merci-adr').hidden = false;
+  } else if (sh && sh.address) {
     const a = sh.address;
     $('merci-adr').innerHTML = '<b>Livraison à</b>' + [sh.name, a.line1, a.line2, `${a.postal_code || ''} ${a.city || ''}`, (Object.values(PAYS).flatMap(l => Object.entries(l)).find(([n, c]) => c === a.country) || [a.country])[0]].map(x => String(x || '').trim()).filter(Boolean).map(echap).join('<br>');
     $('merci-adr').hidden = false;
