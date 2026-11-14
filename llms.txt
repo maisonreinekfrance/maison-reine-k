@@ -1,0 +1,34 @@
+# Maison Reine K
+
+> Maison Reine K est la maison de Reine K, spécialiste du cheveu texturé (2B à 4C) en France. Elle vend des tissages et extensions Raw hair (100 % cheveux humains non traités), des closures et lace frontales HD, des extensions tape-in et la gamme de soins REINEK, avec livraison en France, en Europe, aux États-Unis et au Canada. Reine K a créé ses propres lissages pour cheveux texturés et forme les coiffeuses au lissage et à la pose d'extensions.
+
+- Rendez-vous, commandes et questions : WhatsApp +33 6 61 09 38 64 (https://wa.me/33661093864). Le salon reçoit uniquement sur rendez-vous, en France.
+- Instagram : https://www.instagram.com/reinek_beauty/ · TikTok : https://www.tiktok.com/@reinekbeauty
+- Paiement en ligne sécurisé par carte (Stripe).
+
+## Pages principales
+- [Accueil](https://maisonreinek.fr/) : présentation de la Maison et de Reine K
+- [Extensions et tissages](https://maisonreinek.fr/extensions.html) : tissages Raw hair, closures, lace frontales HD, tape-in, pose au salon
+- [Lissages](https://maisonreinek.fr/lissages.html) : Trio Signature, Karité Tanin, Kératine, pensés pour les cheveux texturés
+- [Formations](https://maisonreinek.fr/formations.html) : formation lissage, formation pose d'extensions, mini-formation sur le cheveu texturé
+- [Boutique](https://maisonreinek.fr/boutique.html) : soins REINEK
+- [À propos](https://maisonreinek.fr/a-propos.html) : parcours de Reine K
+- [Livraison et retours](https://maisonreinek.fr/livraison-retours.html)
+
+## Produits
+- [Hydra Essence](https://maisonreinek.fr/produit-hydra-essence.html) : Le duo qui nettoie en douceur et hydrate intensément les cheveux texturés, du 2B au 4C. Des boucles plus souples, rebondies et éclatantes. Dès 18 €.
+- [Nutri Essence](https://maisonreinek.fr/produit-nutri-essence.html) : Un bain de nutrition pour les cheveux texturés secs ou fragilisés, du 2B au 4C. Il restaure la fibre et sublime les boucles sans les alourdir. Dès 18 €.
+- [Scalp Detox](https://maisonreinek.fr/produit-scalp-detox.html) : Un gommage aux micro-grains de noyaux d’abricot et à la kératine : il exfolie en douceur, élimine sébum, cellules mortes et résidus de coiffants, et réveille le cuir chevelu. Dès 25 €.
+- [Sérum Élixir](https://maisonreinek.fr/produit-serum-elixir.html) : Le sérum qui nourrit, renforce et protège les cheveux texturés. Il réduit la casse et favorise un environnement propice à la pousse. Dès 25 €.
+- [Leave-in Kéra-Monoï](https://maisonreinek.fr/produit-leave-in.html) : Le soin sans rinçage qui hydrate, nourrit et renforce la fibre tout en facilitant le coiffage. Sa texture légère discipline les frisottis, sans effet gras. Dès 25 €.
+- [Kit Chrono Liss](https://maisonreinek.fr/produit-chrono-liss.html) : Un lissage HD réalisé en 15 minutes à la maison, qui respecte la texture naturelle des cheveux. Il réduit le volume et les frisottis, pour un fini naturel sans effet figé. Dès 40 €.
+- [Hair Oil pousse et volume](https://maisonreinek.fr/produit-huile-chebe.html) : Une huile au chébé et à la cola, pour aider la pousse et donner du volume aux cheveux. Flacon de 50 ml. Dès 25 €.
+- [Tissage lisse Double Drawn](https://maisonreinek.fr/produit-tissage-lisse.html) : Des boules de tissage en Raw hair, 100 % cheveux humains non traités, venus directement du Vietnam. Douces, épaisses, naturelles et réutilisables plusieurs fois. Dès 90 €.
+- [Tissages blonds](https://maisonreinek.fr/produit-tissage-blond.html) : Une collection de blonds premium, choisis pour leur douceur et leur rendu luxueux. Mélangés à nos tissages naturels, ils créent un effet balayage digne du salon. Dès 117 €.
+- [Wavy cambodgien Double Drawn](https://maisonreinek.fr/produit-tissage-wavy.html) : De belles ondulations souples, du mouvement et un volume généreux. La finition Double Drawn donne une densité harmonieuse jusqu’aux pointes. Dès 195 €.
+- [Curly indien Double Drawn](https://maisonreinek.fr/produit-tissage-deep-curly.html) : Des boucles profondes, définies et rebondies, pour une chevelure texturée, volumineuse et pleine de caractère. Dès 135 €.
+- [Tape-in Natural Color](https://maisonreinek.fr/produit-tape-in.html) : Des bandes adhésives discrètes qui se fondent dans votre chevelure : de la longueur et du volume, avec un résultat naturel et raffiné. Dès 130 €.
+- [Lace frontale HD lisse](https://maisonreinek.fr/produit-frontale-hd-lisse.html) : Une lace HD ultra-fine qui se fond sur toutes les carnations : une fois posée, elle devient presque invisible, comme si les cheveux poussaient du cuir chevelu. Dès 195 €.
+- [Closure HD lisse](https://maisonreinek.fr/produit-closure-hd-lisse.html) : La closure referme le dessus de la tête pour une raie naturelle. Sa lace HD se fond avec la peau, ses nœuds fins et peu foncés restent discrets. Dès 115 €.
+- [Lace frontale HD Wavy](https://maisonreinek.fr/produit-frontale-hd-wavy.html) : Des ondulations souples et aériennes, des boucles peu définies pour un effet volumineux et fluide, avec une lace HD transparente. Dès 205 €.
+- [Closure HD Wavy](https://maisonreinek.fr/produit-closure-hd-wavy.html) : Une closure 6x6 aux ondulations souples, avec une lace HD ultra-transparente. Sa grande surface laisse toute liberté pour placer la raie. Dès 195 €.
