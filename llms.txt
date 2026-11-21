@@ -1,8 +1,9 @@
 # Maison Reine K
 
-> Maison Reine K est la maison de Reine K, spécialiste du cheveu texturé (2B à 4C) en France. Elle vend des tissages et extensions Raw hair (100 % cheveux humains non traités), des closures et lace frontales HD, des extensions tape-in et la gamme de soins REINEK, avec livraison en France, en Europe, aux États-Unis et au Canada. Reine K a créé ses propres lissages pour cheveux texturés et forme les coiffeuses au lissage et à la pose d'extensions.
+> Maison Reine K est le salon et la boutique en ligne de Reine K, spécialiste du cheveu texturé (2B à 4C), installée à Grenoble (France). Elle vend des tissages et extensions Raw hair (100 % cheveux humains non traités), des closures et lace frontales HD, des extensions tape-in et la gamme de soins REINEK, avec livraison en France, en Europe, aux États-Unis et au Canada. Reine K a créé ses propres lissages pour cheveux texturés et forme les coiffeuses au lissage et à la pose d'extensions.
 
-- Rendez-vous, commandes et questions : WhatsApp +33 6 61 09 38 64 (https://wa.me/33661093864). Le salon reçoit uniquement sur rendez-vous, en France.
+- Salon : 25 boulevard Agutte Sembat, 38000 Grenoble (France), uniquement sur rendez-vous. Clientes de Grenoble, de l'Isère et de la région lyonnaise.
+- Rendez-vous, commandes et questions : WhatsApp +33 6 61 09 38 64 (https://wa.me/33661093864).
 - Instagram : https://www.instagram.com/reinek_beauty/ · TikTok : https://www.tiktok.com/@reinekbeauty
 - Paiement en ligne sécurisé par carte (Stripe).
 
@@ -13,6 +14,8 @@
 - [Formations](https://maisonreinek.fr/formations.html) : formation lissage, formation pose d'extensions, mini-formation sur le cheveu texturé
 - [Boutique](https://maisonreinek.fr/boutique.html) : soins REINEK
 - [À propos](https://maisonreinek.fr/a-propos.html) : parcours de Reine K
+- [Le salon à Grenoble](https://maisonreinek.fr/salon-grenoble.html) : adresse, prestations au salon, réservation
+- [Préparer son rendez-vous](https://maisonreinek.fr/preparer-rendez-vous.html) : lissage, pose d'extensions, formation
 - [Livraison et retours](https://maisonreinek.fr/livraison-retours.html)
 
 ## Produits
